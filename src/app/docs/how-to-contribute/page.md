@@ -3,10 +3,10 @@ title: How to contribute 🤗
 nextjs:
   metadata:
     title: How to contribute
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: Learn how to contribute.
 ---
 
-Welcome! We appreciate your interest in contributing to Dingo. Whether you're a developer, designer, writer, or simply passionate about open source, there are several ways you can help improve this project. This document will guide you through the process of contributing to our Python repository.
+Welcome! We appreciate your interest in contributing to `agent_dingo`. Whether you're a developer, designer, writer, or simply passionate about open source, there are several ways you can help improve this project. This document will guide you through the process of contributing to our Python repository.
 
 ---
 
@@ -28,17 +28,3 @@ Before contributing, we recommend that you open an issue to discuss your planned
 {% callout title="Legal Notice" %}
 When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
 {% /callout %}
-
-## Development  dependencies
-
-In order to install all development dependencies, run the following command:
-
-```shell
-pip install -r requirements-dev.txt
-```
-
-To ensure that you follow the development workflow, please setup the pre-commit hooks:
-
-```shell
-pre-commit install
-```
