@@ -8,14 +8,22 @@ nextjs:
 
 ## Overview
 
-In previous tutorials, we built a chatbot that had access to a single external knowledge base, enabling it to respond to questions beyond its training data. However, in practice, it is often necessary to utilize multiple external data sources (e.g., files, webpages, etc.) and tools (e.g., functions determined by an app developer). These scenarios can be managed by Agents. 
+In previous tutorials, we built a pipeline that embeds the chunks of text similar to user's query to a system message, which allows the chatbot to access the external knowledge base. However, in practice, this approach may be too naive, as it:
 
-The fundamental concept of agents involves using a language model to determine a sequence of actions and their order. One possible action could be retrieving data from an external knowledge base in response to a user's query. In this tutorial, we will develop a simple Dingo Agent that accesses multiple data sources and invokes data retrieval when needed. 
+- Embeds the data regardless its necessity;
+- Does not provide a mechanism to selectively access different data sources;
+- Does not allow to modify the query before retrieving the data;
+- Does not allow to pass multiple queries.
 
-As an example of external knowledge bases, we will use three webpages containing release announcement posts about recently released generative models: 
-1. [Phi-3 family of models](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/) from Microsoft; 
-2. [Llama 3 model](https://ai.meta.com/blog/meta-llama-3/) from Meta; 
-3. [OpenVoice model](https://research.myshell.ai/open-voice) from MyShell.  
+All of these limitations can be addressed by building a more sophisticated pipeline logic, that might have a routing and query-rewriting mechanisms. However, a viable alternative is to use an `Agent` which can inherently perform all of these tasks.
+
+The fundamental concept of agents involves using a language model to determine a sequence of actions (including the usage of external tools) and their order. One possible action could be retrieving data from an external knowledge base in response to a user's query. In this tutorial, we will develop a simple Agent that accesses multiple data sources and invokes data retrieval when needed.
+
+As an example of external knowledge bases, we will use three webpages containing release announcement posts about recently released generative models:
+
+1. [Phi-3 family of models](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/) from Microsoft;
+2. [Llama 3 model](https://ai.meta.com/blog/meta-llama-3/) from Meta;
+3. [OpenVoice model](https://research.myshell.ai/open-voice) from MyShell.
 
 Since all of these models were released recently and this information was not included in GPT-4's training data, GPT can either provide no information about these topics, or may hallucinate and generate incorrect responses (see example in my previous article [here](/docs/use-cases-rag-chatbot)). By creating an agent that is able to retrieve data from external datasources (such as webpages linked above), we will provide an LLM with relevant contextual information that will be used for generating responses.
 
@@ -37,9 +45,9 @@ The application will consist of the following components:
 
 5. `Audio gen docs`: a vector store containing documentation about recently released OpenVoice model.
 
-4. `Embedding V3 small` model from OpenAI: computes text embeddings.
+6. `Embedding V3 small` model from OpenAI: computes text embeddings.
 
-5. [QDrant](https://qdrant.tech/): vector database that stores embedded chunks of text.
+7. [QDrant](https://qdrant.tech/): vector database that stores embedded chunks of text.
 
 ---
 
@@ -73,7 +81,9 @@ audio_gen_vector_store = Qdrant(collection_name="audio_gen", embedding_size=1536
 # Initialize an LLM
 llm = OpenAI(model = "gpt-3.5-turbo")
 ```
+
 #### Step 2:
+
 Then, the above-mentioned websites have to be parsed, chunked into smaller pieces, and embedded. The embedded chunks are used to populate the corresponding vector stores.
 
 ```python
@@ -113,8 +123,8 @@ python build.py
 ```
 
 #### Step 3:
-Once the vector store is created, we can create a RAG pipeline and serve it.
-EXPLAIN THIS STEP.
+
+Once the vector store is created, we can create a RAG pipeline. To access the pipeline from the streamlit application, we can serve it using the `serve_pipeline` function, which provides a REST API compatible with the OpenAI API (this means that we can use an official OpenAI Python client to interact with the pipeline).
 
 ```python
 # serve.py
@@ -128,8 +138,8 @@ agent = Agent(llm, max_function_calls=3)
 @agent.function
 def retrieve(topic: str, query: str) -> str:
     """Retrieves the documents from the vector store based on the similarity to the query.
-    This function is to be used to retrieve the additional information in order to anwer users' queries.
- 
+    This function is to be used to retrieve the additional information in order to answer users' queries.
+
     Parameters
     ----------
     topic : str
@@ -175,9 +185,10 @@ Run the script:
 python serve.py
 ```
 
-At this stage, we have a RAG pipeline compatible with the OpenAI API, named `gpt-agent`, running on `http://127.0.0.1:8000/`. The Streamlit application will send requests to this backend.
+At this stage, we have an openai-compatible compatible backend with a model named `gpt-agent`, running on `http://127.0.0.1:8000/`. The Streamlit application will send requests to this backend.
 
 #### Step 4:
+
 Finally, we can proceed with building a chatbot UI:
 
 ```python
@@ -231,3 +242,5 @@ streamlit run app.py
 ---
 
 ## Conclusion
+
+In this tutorial, we have developed a RAG agent that can access external knowledge bases and retrieve data from them if needed. Unlike a "naive" RAG pipeline, the agent can selectively decide whether to access the external data, which data source to use (and how many times), and how to rewrite the user's query before retrieving the data. This approach allows the agent to provide more accurate and relevant responses, while the high-level pipeline logic remains as simple as of a "naive" RAG pipeline.

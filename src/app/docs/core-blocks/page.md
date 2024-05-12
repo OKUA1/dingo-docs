@@ -78,7 +78,6 @@ Prompt modifier takes a prompt and modifies it in some way such that the result 
 
 An example of a prompt modifier is a `agent_dingo.rag.prompt_modifiers.RAGPromptModifier` that modifies the prompt by adding relevant information retrieved from the external source.
 
-### OLEG ADD AN EXAMPLE HERE PLS
 ---
 
 ## Reasoners

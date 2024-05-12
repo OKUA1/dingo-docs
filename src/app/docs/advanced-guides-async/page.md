@@ -64,9 +64,7 @@ When using the `InlineBlock`, the async block can be defined simply by decoratin
 ```python
 from agent_dingo.core.blocks import InlineBlock
 from agent_dingo.core.state import KVData
-
 import asyncio
-
 
 @InlineBlock(required_context_keys=[])
 async def block(state, store, context):

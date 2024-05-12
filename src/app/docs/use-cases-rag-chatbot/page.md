@@ -7,7 +7,8 @@ nextjs:
 ---
 
 ## Overview
-Chatbots are among the most popular use cases for large language models (LLMs). They are designed to understand and respond to user inquiries, provide answers, perform tasks, or direct users to resources. Utilizing chatbots can significantly decrease customer support costs and improve response times to user requests. However, a common issue with chatbots is their tendency to deliver generic information when users expect domain-specific responses. Additionally, they may generate outdated information when users need current updates. 
+
+Chatbots are among the most popular use cases for large language models (LLMs). They are designed to understand and respond to user inquiries, provide answers, perform tasks, or direct users to resources. Utilizing chatbots can significantly decrease customer support costs and improve response times to user requests. However, a common issue with chatbots is their tendency to deliver generic information when users expect domain-specific responses. Additionally, they may generate outdated information when users need current updates.
 
 For demonstrations, I have chosen the webpage about [Phi-3](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/) — a family of open AI models by Microsoft released in April 2024.
 
@@ -21,7 +22,7 @@ completion = client.chat.completions.create(
   model="gpt-4-turbo",
   messages=[
     {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "How many parameters does the Phi-3-mini model from Microsoft have?"} 
+    {"role": "user", "content": "How many parameters does the Phi-3-mini model from Microsoft have?"}
   ]
 )
 
@@ -119,6 +120,7 @@ llm = OpenAI(model="gpt-4-turbo")
 ```
 
 #### Step 2:
+
 Then, the website about [Phi-3](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/) family of models has to be parsed, chunked into smaller pieces, and embedded. The embedded chunks are used to populate a vector store.
 
 ```python
@@ -148,16 +150,17 @@ Run this script:
 python build.py
 ```
 
-At this stage, the vector store is created, allowing chunks to be retrieved and incorporated into the prompt based on a user's query. 
+At this stage, the vector store is created, allowing chunks to be retrieved and incorporated into the prompt based on a user's query.
 
 #### [Optional Step]
+
 It is also possible to identify which chunks are retrieved and check their similarity scores to the user's query:
 
 ```python
 # test.py
 from components import vector_store, embedder
 query = "How many parameters does Phi-3-mini model from Microsoft have?"
-query_embedding = embedder.embed([query])
+query_embedding = embedder.embed([query])[0]
 # select a single chunk (k=1) with the highest similarity to the query
 retrieved_chunks = vector_store.retrieve(k=1, query=query_embedding)
 print(retrieved_chunks)
@@ -169,8 +172,10 @@ We can see that the correct chunk was retrieved, which indeed contains informati
 ### Retrieval and Augmentation
 
 #### Step 3:
+
 Once the vector store is created, we can create a RAG pipeline and serve it.
-EXPLAIN THIS STEP. The limitation of Streamlit (https://docs.streamlit.io/develop/api-reference/chat/st.chat_message): only supports user and assistant messages.
+
+Streamlit [only supports](https://docs.streamlit.io/develop/api-reference/chat/st.chat_message) two types of messages: `User` and `Assistant`. However, it us often more appropriate to include the retrieved data into the `System` message. Therefore, we use a custom block that injects a `System` message into the chat prompt before passing it to the RAG modifier.
 
 ```python
 # serve.py
@@ -207,6 +212,7 @@ python serve.py
 At this stage, we have a RAG pipeline compatible with the OpenAI API, named `gpt-rag`, running on `http://127.0.0.1:8000/`. The Streamlit application will send requests to this backend.
 
 #### Step 4:
+
 Finally, we can proceed with building a chatbot UI:
 
 ```python
@@ -264,4 +270,3 @@ If we pose the same question to this chatbot as we previously did to GPT-4 and G
 ## Conclusion
 
 In this tutorial we have built a simple chatbot that utilizes RAG technique and successfully retrieves information from a vector store to generate up-to-date responses. It can be seen that Dingo enhances the development of LLM-based applications by offering essential (core) features and flexibility. That allows developers to quickly and easily create application prototypes.
-

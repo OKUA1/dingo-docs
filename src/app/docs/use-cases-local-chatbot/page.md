@@ -30,16 +30,17 @@ The application will consist of the following components:
 
 There are two main differences to an architecture used in the previous tutorial:
 
-* **Usage of quantized open-source LLM:**
+- **Usage of quantized open-source LLM:**
 
-Under the hood, Dingo uses [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python) that is a Python binding for [`llama.cpp`](https://github.com/ggerganov/llama.cpp) library which allows running local LLMs converted to GGUF format. GGUF is a binary file format for storing models for inference with `llama.cpp`. 
+For running the model locally, Dingo can use [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python) that is a Python binding for [`llama.cpp`](https://github.com/ggerganov/llama.cpp) library which allows to run models converted to GGUF, a binary file format for storing models for inference with `llama.cpp`.
 
-You can find models with GGUF files on [Hugging Face](https://huggingface.co/models?library=gguf). We have chosen `CapybaraHermes-2.5-Mistral-7B-GGUF` model from TheBloke for this tutorial. If you go to [`Files and versions`](https://huggingface.co/TheBloke/CapybaraHermes-2.5-Mistral-7B-GGUF/tree/main) tab you will find many options to choose from. They correspond to different [quantization types](https://huggingface.co/docs/hub/en/gguf#quantization-types) of the model. Higher precision in model weights usually leads to a higher accuracy but also requires more computational resources, which can make the model slower and more costly to operate. Thus, quantization approach is often used. Quantization involves reducing the memory needed to store model weights by decreasing their precision (for example, from 32-bit floating points to 4-bit integers). That allows loading large models that typically would not fit into memory, and accelerating the inference. In this context, a 4-bit quantization represents an optimal balance between performance, and size/speed for LLMs.
+You can find many GGUF models on [Hugging Face Hub](https://huggingface.co/models?library=gguf). We have chosen `CapybaraHermes-2.5-Mistral-7B-GGUF` model [prvided by TheBloke](https://huggingface.co/TheBloke/CapybaraHermes-2.5-Mistral-7B-GGUF) for this tutorial.
 
-* **Usage of open-source embedding model:**
+In order to download the model, you must go to [`Files and versions`](https://huggingface.co/TheBloke/CapybaraHermes-2.5-Mistral-7B-GGUF/tree/main), where you will find many different files to choose from. They correspond to different [quantization types](https://huggingface.co/docs/hub/en/gguf#quantization-types) of the model. Quantization involves reducing the memory needed to store model weights by decreasing their precision (for example, from 32-bit floating points to 4-bit integers). Higher precision usually leads to a higher accuracy but also requires more computational resources, which can make the model slower and more costly to operate. Decreasing the precision allows loading large models that typically would not fit into memory, and accelerating the inference. Usually, a 4-bit quantization is considered to be an optimal balance between performance, and size/speed for LLMs.
+
+- **Usage of open-source embedding model:**
 
 SentenceTransformers is a Python toolkit that is built on top of Hugging Face's transformers library. It facilitates using transformer models, like BERT, RoBERTa, and others, for generating sentence embeddings. These embeddings can be used for tasks such as clustering, semantic search, and classification of texts. You can check the provided pre-trained models tuned for specific tasks either on the page of SentenceTransformers [here](https://sbert.net/docs/pretrained_models.html#model-overview), or on the [Hugging Face Hub](https://huggingface.co/models?library=sentence-transformers&sort=downloads). The models on Hugging Face Hub have a [widget](https://huggingface.co/docs/hub/models-widgets#whats-a-widget) that allows running inferences and playing with the model directly in the browser.
-
 
 ---
 
@@ -71,6 +72,7 @@ By asking a question about the Phi-3 family of models, we can verify that our lo
 ![Dingo Local Chatbot](https://i.ibb.co/23VmG8Y/Screenshot-2024-05-04-at-21-12-59.png)
 
 ---
+
 ## Conclusion
 
 In this tutorial we have built a simple local chatbot that utilizes RAG technique and successfully retrieves information from a vector store to generate up-to-date responses. It can be seen that Dingo provides developers with flexibility, as the components of a LLM pipeline can be easily exchanged. For example, we were able to switch from a proprietary solution to a fully open-source solution running locally by simply changing two components of the pipeline.

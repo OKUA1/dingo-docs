@@ -31,5 +31,5 @@ Supported parameters:
 
 - `agent_dingo.rag.embedders.openai.OpenAIEmbedder`:
   - `model`: the model to use, by default is `text-embedding-3-small`.
-  - `base_url`: the base URL of the provider. By default None, which means it will use the OpenAI API.
-  - `dimensions`: the number of dimensions the resulting output embeddings should have, by default is None.
+  - `base_url`: the base URL of the provider. By default is None, which means it will use the OpenAI API.
+  - `dimensions`: the number of dimensions the resulting output embeddings should have. By default is None, which means that the default dimension size defined by the provider will be used.

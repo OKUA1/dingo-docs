@@ -6,7 +6,7 @@ nextjs:
     description: Definition of agents.
 ---
 
-It is possible to convert [Langchain Tools](https://python.langchain.com/docs/modules/agents/tools/) into dingo-compatible functions (referred to as function descriptors) in order to register them with Dingo. The converter can be used as follows:
+It is possible to convert [LangChain Tools](https://python.langchain.com/docs/modules/agents/tools/) into dingo-compatible functions (referred to as function descriptors) in order to register them with Dingo. The converter can be used as follows:
 
 1. Install langchain:
 

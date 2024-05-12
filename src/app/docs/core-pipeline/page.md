@@ -78,7 +78,6 @@ messages = [
     UserMessage("How large is it?"),
 ]
 
-
 llm = OpenAI("gpt-3.5-turbo")
 pipeline = llm.as_pipeline()
 pipeline.run(ChatPrompt(messages))

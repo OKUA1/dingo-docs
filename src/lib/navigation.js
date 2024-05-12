@@ -45,18 +45,23 @@ export const navigation = [
       { title: 'Chunker', href: '/docs/rag-chunker' },
       { title: 'Embedder', href: '/docs/rag-embedder' },
       { title: 'Vector stores', href: '/docs/rag-vector-stores' },
+      {
+        title: 'Creating a RAG pipeline',
+        href: '/docs/rag-creating-rag-pipeline',
+      },
     ],
   },
   {
     title: 'Serving',
-    links: [
-      { title: 'Serving overview', href: '/docs/serving-overview' },
-    ],
+    links: [{ title: 'Serving overview', href: '/docs/serving-overview' }],
   },
   {
     title: 'Advanced guides',
     links: [
-      { title: 'Running pipelines asynchronously', href: '/docs/advanced-guides-async' },
+      {
+        title: 'Running pipelines asynchronously',
+        href: '/docs/advanced-guides-async',
+      },
       { title: 'Output parsers', href: '/docs/advanced-guides-output-parsers' },
     ],
   },
@@ -64,14 +69,15 @@ export const navigation = [
     title: 'Use cases',
     links: [
       { title: 'Building a RAG chatbot', href: '/docs/use-cases-rag-chatbot' },
-      { title: 'Building a local chatbot', href: '/docs/use-cases-local-chatbot' },
+      {
+        title: 'Building a local chatbot',
+        href: '/docs/use-cases-local-chatbot',
+      },
       { title: 'Building a RAG agent', href: '/docs/use-cases-rag-agent' },
     ],
   },
   {
     title: 'Contributing',
-    links: [
-      { title: 'How to contribute', href: '/docs/how-to-contribute' },
-    ],
+    links: [{ title: 'How to contribute', href: '/docs/how-to-contribute' }],
   },
 ]
